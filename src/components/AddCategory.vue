@@ -2,7 +2,7 @@
   <div class="card h-100">
     <div class="card-header bordered">
       <div class="header-block">
-        <h3 class="title" style="color: red">Добавить категорию</h3>
+        <h3 class="title">Добавить категорию</h3>
       </div>
     </div>
     <div class="card-block">

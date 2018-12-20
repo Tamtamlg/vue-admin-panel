@@ -17,9 +17,9 @@ export default new Vuex.Store({
         icon: "building-o"
       },
       {
-        name: "История",
-        route: "history",
-        icon: "flash"
+        name: "Записи",
+        route: "records",
+        icon: "plus-square"
       },
       {
         name: "Планирование",
@@ -27,16 +27,17 @@ export default new Vuex.Store({
         icon: "archive"
       },
       {
-        name: "Запись",
-        route: "records",
-        icon: "plus-square"
+        name: "История",
+        route: "history",
+        icon: "flash"
       }
     ],
     currency: [],
     privatBankApi: 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5',
     api: 'http://localhost:3000/',
     bills: 0,
-    categories: []
+    categories: [],
+    events: []
   },
   mutations: {
     request (state, payload) {
@@ -62,6 +63,9 @@ export default new Vuex.Store({
     },
     setCategories(state, payload) {
       state.categories = payload;
+    },
+    setEvents(state, payload) {
+      state.events = payload;
     }
   },
   actions: {
@@ -123,6 +127,24 @@ export default new Vuex.Store({
       }
     },
 
+    async getEvents({state, commit, dispatch}) {
+      commit('clearError');
+      commit('setLoading', true);
+      try {
+        commit('request', false);
+        await axios.get(state.api + 'events').then(response => {
+          commit('setEvents', response.data)
+        });
+        commit('setLoading', false);
+        commit('request', true);
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', true)
+        commit('setMessage', error.message);
+        dispatch('clearMessage');
+      }
+    },
+
     async addCategory({state, commit, dispatch}, payload) {
       commit('clearError');
       commit('setLoading', true);
@@ -140,6 +162,106 @@ export default new Vuex.Store({
           dispatch('getCategories');
           commit('setMessage', 'Данные успешно добавлены')
           dispatch('clearMessage');
+        });
+        commit('setLoading', false);
+        commit('request', true);
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', true)
+        commit('setMessage', error.message)
+        dispatch('clearMessage');
+      }
+    },
+
+    async editCategory({state, commit, dispatch}, payload) {
+      commit('clearError');
+      commit('setLoading', true);
+      try {
+        commit('request', false);
+        const requestData = {
+          "id": payload.id,
+          "name": payload.name,
+          "capacity": payload.capacity
+        }
+        await axios.put(state.api + `categories/${payload.id}`, requestData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(() => {
+          dispatch('getCategories');
+          commit('setMessage', 'Данные успешно изменены')
+          dispatch('clearMessage');
+        });
+        commit('setLoading', false);
+        commit('request', true);
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', true)
+        commit('setMessage', error.message)
+        dispatch('clearMessage');
+      }
+    },
+
+    async delCategory({state, commit, dispatch}, payload) {
+      commit('clearError');
+      commit('setLoading', true);
+      try {
+        commit('request', false);
+        await axios.delete(state.api + `categories/${payload.id}`, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(() => {
+          dispatch('getCategories');
+          commit('setMessage', 'Данные успешно удалены')
+          dispatch('clearMessage');
+        });
+        commit('setLoading', false);
+        commit('request', true);
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', true)
+        commit('setMessage', error.message)
+        dispatch('clearMessage');
+      }
+    },
+
+    async addEvent({state, commit, dispatch}, payload) {
+      commit('clearError');
+      commit('setLoading', true);
+      try {
+        commit('request', false);
+        const requestData = {
+          type: payload.type,
+          amount: payload.amount,
+          category: payload.category,
+          date: payload.date,
+          description: payload.description
+        }
+        const newBill = payload.type === 'outcom' ? state.bills + payload.amount : state.bills - payload.amount;
+        await axios.post(state.api + `events`, requestData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(() => {
+          commit('setMessage', 'Данные успешно добавлены')
+          dispatch('clearMessage');
+
+          try {
+            axios.put(state.api + 'bill', {value: newBill, currency: 'UAH'}).then(response => {
+              commit('setBills', response.data.value)
+            }).catch(error => {
+              commit('setError', true)
+              commit('setMessage', error.message)
+              dispatch('clearMessage');
+            });
+          } catch (error) {
+            commit('setError', true)
+            commit('setMessage', error.message)
+            dispatch('clearMessage');
+          }
+
+
         });
         commit('setLoading', false);
         commit('request', true);

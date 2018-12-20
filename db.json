@@ -8,7 +8,7 @@
     }
   ],
   "bill": {
-    "value": 94600,
+    "value": 95000,
     "currency": "UAH"
   },
   "categories": [
@@ -28,11 +28,6 @@
       "capacity": 7000
     },
     {
-      "name": "test",
-      "capacity": 100,
-      "id": 4
-    },
-    {
       "name": "test2",
       "capacity": 200,
       "id": 5
@@ -48,9 +43,9 @@
       "id": 7
     },
     {
-      "name": "test",
-      "capacity": 1,
-      "id": 8
+      "id": 8,
+      "name": "test1",
+      "capacity": "1111111"
     }
   ],
   "events": [
@@ -117,6 +112,62 @@
       "date": "03.07.2017 23:26:15",
       "description": "тест фильтр",
       "id": 8
+    },
+    {
+      "type": "outcome",
+      "amount": 50,
+      "category": 8,
+      "date": "20.12.2018 11:12:64",
+      "description": "Проверка",
+      "id": 9
+    },
+    {
+      "type": "outcome",
+      "amount": 25,
+      "category": 8,
+      "date": "20.12.2018 12:12:06",
+      "description": "qwerty",
+      "id": 10
+    },
+    {
+      "type": "outcome",
+      "amount": 100,
+      "category": 5,
+      "date": "20.12.2018 12:12:28",
+      "description": "просто удалил",
+      "id": 11
+    },
+    {
+      "type": "outcome",
+      "amount": 2500,
+      "category": 6,
+      "date": "20.12.2018 14:12:34",
+      "description": "sdfsfsd",
+      "id": 12
+    },
+    {
+      "type": "outcome",
+      "amount": 600,
+      "category": 5,
+      "date": "20.12.2018 15:12:29",
+      "description": "sdfsfsd",
+      "id": 13
+    },
+    {
+      "type": "outcome",
+      "amount": 600,
+      "category": 6,
+      "date": "20.12.2018 15:12:01",
+      "description": "sdfsfsd",
+      "id": 14
+    },
+    {
+      "type": "outcome",
+      "amount": 200,
+      "category": 7,
+      "date": "20.12.2018 15:12:17",
+      "description": "asd",
+      "id": 15
     }
   ]
 }

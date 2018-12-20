@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="card-block">
-      <form>
+      <form @submit.prevent="onSubmit">
         <div class="form-group">
           <label class="control-label" for="category">Выберите категорию</label>
           <select class="form-control" id="edit-category" v-model="activeCategory" @change="changeSelect">
@@ -21,7 +21,7 @@
           <label class="control-label" for="category-value">Введите лимит</label>
           <input type="number" value="0" id="edit-category-value" class="form-control" v-model="activeCategoryCapacity">
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary">Изменить</button>
       </form>
     </div>
   </div>
@@ -49,15 +49,33 @@ export default {
       return this.$store.state.categories.filter(item => {
         return item.name === this.activeCategory;
       }).map(item => item.capacity)[0]
+    },
+    selectedCategoryId() {
+      return this.$store.state.categories.filter(item => {
+        return item.name === this.activeCategory;
+      }).map(item => item.id)[0]
     }
   },
   methods: {
-    getCategories() {
-      this.$store.dispatch('getCategories');
+    editCategory() {
+      this.$store.dispatch('editCategory', {
+        id: this.selectedCategoryId,
+        name: this.activeCategoryName,
+        capacity: this.activeCategoryCapacity
+      });
     },
     changeSelect() {
       this.activeCategoryName = this.selectedCategoryName;
       this.activeCategoryCapacity = this.selectedCategoryCapacity;
+    },
+    clearForm() {
+      this.activeCategoryName = '';
+      this.activeCategoryCapacity = '';
+      this.activeCategory = '';
+    },
+    onSubmit() {
+      this.editCategory();
+      this.clearForm();
     }
   }
 };

@@ -18,6 +18,7 @@
               class="dropdown-item"
               v-for="item in menuLinks"
               :key="item.route"
+               @click.native="showDropdown = !showDropdown"
             >
               <i class="fa" :class="`fa-${item.icon}`"></i>
               {{item.name}}

@@ -20,6 +20,9 @@
         <div class="col-md-6 mb-3">
           <edit-category></edit-category>
         </div>
+        <div class="col-md-6 mb-3">
+          <del-category></del-category>
+        </div>
       </div>
     </section>
   </article>
@@ -29,15 +32,14 @@
 import AddCategory from "@/components/AddCategory.vue";
 import AddEvent from "@/components/AddEvent.vue";
 import EditCategory from "@/components/EditCategory.vue";
+import DelCategory from "@/components/DelCategory.vue";
 
 export default {
   components: {
     AddCategory,
     AddEvent,
-    EditCategory
+    EditCategory,
+    DelCategory
   }
 };
 </script>
-
-<style>
-</style>

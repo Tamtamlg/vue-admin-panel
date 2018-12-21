@@ -39,6 +39,11 @@ export default new Router({
       component: () => import('./views/History.vue')
     },
     {
+      path: '/history/:id',
+      name: 'historyItem',
+      component: () => import('./views/HistoryItem.vue')
+    },
+    {
       path: '/planning',
       name: 'planning',
       component: () => import('./views/Planning.vue')

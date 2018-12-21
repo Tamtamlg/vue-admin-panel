@@ -28,24 +28,9 @@
       "capacity": 7000
     },
     {
-      "name": "test2",
-      "capacity": 200,
-      "id": 5
-    },
-    {
-      "name": "test3",
-      "capacity": 3000,
-      "id": 6
-    },
-    {
-      "name": "test4",
-      "capacity": 3000,
-      "id": 7
-    },
-    {
-      "id": 8,
-      "name": "test1",
-      "capacity": "1111111"
+      "id": 4,
+      "name": "Зарплата",
+      "capacity": "50000"
     }
   ],
   "events": [
@@ -168,6 +153,118 @@
       "date": "20.12.2018 15:12:17",
       "description": "asd",
       "id": 15
+    },
+    {
+      "type": "income",
+      "amount": 50000,
+      "category": 4,
+      "date": "21.12.2018 11:12:78",
+      "description": "Получил зарплату",
+      "id": 16
+    },
+    {
+      "type": "outcome",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:73",
+      "description": "съел 100 грн",
+      "id": 17
+    },
+    {
+      "type": "income",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:27",
+      "description": "нашел 100 грн",
+      "id": 18
+    },
+    {
+      "type": "outcome",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:42",
+      "description": "съел 100 грн",
+      "id": 19
+    },
+    {
+      "type": "outcome",
+      "amount": 300,
+      "category": 2,
+      "date": "21.12.2018 11:12:45",
+      "description": "нашел 300 грн",
+      "id": 20
+    },
+    {
+      "type": "outcome",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:08",
+      "description": "sdfsfsd",
+      "id": 21
+    },
+    {
+      "type": "income",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:76",
+      "description": "съел 100 грн",
+      "id": 22
+    },
+    {
+      "type": "income",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:32",
+      "description": "asa",
+      "id": 23
+    },
+    {
+      "type": "income",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:38",
+      "description": "sdfsfsd",
+      "id": 24
+    },
+    {
+      "type": "income",
+      "amount": 400,
+      "category": 2,
+      "date": "21.12.2018 11:12:73",
+      "description": "sdfsfsd",
+      "id": 25
+    },
+    {
+      "type": "income",
+      "amount": 100,
+      "category": 2,
+      "date": "21.12.2018 11:12:75",
+      "description": "съел 100 грн",
+      "id": 26
+    },
+    {
+      "type": "income",
+      "amount": 400,
+      "category": 2,
+      "date": "21.12.2018 11:12:63",
+      "description": "съел 100 грн",
+      "id": 27
+    },
+    {
+      "type": "outcome",
+      "amount": 500,
+      "category": 2,
+      "date": "21.12.2018 11:12:17",
+      "description": "съел 100 грн",
+      "id": 28
+    },
+    {
+      "type": "income",
+      "amount": 50000,
+      "category": 4,
+      "date": "21.12.2018 11:12:88",
+      "description": "Получил зарплату",
+      "id": 29
     }
   ]
 }

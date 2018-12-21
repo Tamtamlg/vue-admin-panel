@@ -238,7 +238,12 @@ export default new Vuex.Store({
           date: payload.date,
           description: payload.description
         }
-        const newBill = payload.type === 'outcom' ? state.bills + payload.amount : state.bills - payload.amount;
+        let newBill;
+        if (payload.type === 'outcome') {
+          newBill = state.bills - payload.amount;
+        } else {
+          newBill = state.bills + payload.amount;
+        }
         await axios.post(state.api + `events`, requestData, {
           headers: {
             'Content-Type': 'application/json'

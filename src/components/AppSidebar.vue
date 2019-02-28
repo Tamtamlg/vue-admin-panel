@@ -21,9 +21,9 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/login">
+            <a href="#" @click="onLogout">
               <i class="fa fa-power-off"></i> Выход
-            </router-link>
+            </a>
           </li>
         </ul>
       </nav>
@@ -36,6 +36,13 @@ export default {
   computed: {
     menuLinks() {
       return this.$store.state.menuLinks;
+    }
+  },
+  methods: {
+    onLogout() {
+     this.$store.dispatch("onLogout").then(() => {
+        this.$router.push('/login')
+      });
     }
   }
 };

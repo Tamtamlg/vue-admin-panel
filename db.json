@@ -5,6 +5,12 @@
       "email": "test@mail.com",
       "password": "12345678",
       "name": "Администратор"
+    },
+    {
+      "id": 2,
+      "email": "test1@mail.com",
+      "password": "11111111",
+      "name": "Юзер"
     }
   ],
   "bill": {

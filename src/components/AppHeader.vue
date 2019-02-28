@@ -10,7 +10,7 @@
             role="button"
             @click.prevent.stop="showDropdown = !showDropdown"
           >
-            <span class="name">Здравствуйте, Ирина</span>
+            <span class="name">Здравствуйте, {{userName}}</span>
           </a>
           <div class="dropdown-menu profile-dropdown-menu" v-if="showDropdown">
             <router-link
@@ -23,9 +23,9 @@
               <i class="fa" :class="`fa-${item.icon}`"></i>
               {{item.name}}
             </router-link>
-            <router-link to="/login" class="dropdown-item">
+            <a href="#" @click="onLogout" class="dropdown-item">
               <i class="fa fa-power-off"></i> Выход
-            </router-link>
+            </a>
           </div>
         </li>
       </ul>
@@ -49,6 +49,16 @@ export default {
     },
     menuLinks() {
       return this.$store.state.menuLinks;
+    },
+    userName() {
+      return this.$store.state.userName;
+    }
+  },
+  methods: {
+    onLogout() {
+     this.$store.dispatch("onLogout").then(() => {
+        this.$router.push('/login')
+      });
     }
   }
 };

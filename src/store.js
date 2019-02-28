@@ -6,12 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    token: localStorage.getItem('user-token') || '',
     loading: false,
     endRequest: true,
     error: null,
     message: '',
-    menuLinks: [
-      {
+    menuLinks: [{
         name: "Счет",
         route: "bill",
         icon: "building-o"
@@ -37,13 +37,14 @@ export default new Vuex.Store({
     api: 'http://localhost:3000/',
     bills: 0,
     categories: [],
-    events: []
+    events: [],
+    userName: ''
   },
   mutations: {
-    request (state, payload) {
+    request(state, payload) {
       state.endRequest = payload
     },
-    setLoading (state, payload) {
+    setLoading(state, payload) {
       state.loading = payload
     },
     setMessage(state, payload) {
@@ -52,7 +53,7 @@ export default new Vuex.Store({
     setError(state, payload) {
       state.error = payload;
     },
-    clearError (state) {
+    clearError(state) {
       state.error = null
     },
     setCurrency(state, payload) {
@@ -66,24 +67,95 @@ export default new Vuex.Store({
     },
     setEvents(state, payload) {
       state.events = payload;
+    },
+    setToken(state, payload) {
+      state.token = payload;
+    },
+    setUserName(state, payload) {
+      state.userName = payload;
     }
   },
   actions: {
-    clearMessage({commit}) {
+    clearMessage({
+      commit
+    }) {
       setTimeout(() => {
         commit('setMessage', '')
         commit('clearError');
       }, 5000);
     },
 
-    async getCurrensy({state, commit, dispatch}) {
+    onLogin({
+      state,
+      commit,
+      dispatch
+    }, payload) {
+
+      commit('clearError');
+      commit('setLoading', true);
+
+      return new Promise((resolve, reject) => {
+        commit('request', false);
+        axios.get(state.api + 'users', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then((response) => {
+          const user = response.data.find(item => {
+            return item.email === payload.email && item.password === payload.password;
+          })
+          if (user) {
+            commit('setUserName', user.name);
+            if (response.data.token) {
+              const token = response.data.token;
+              localStorage.setItem('user-token', token);
+              commit('setToken', token);
+              // axios.defaults.headers.common['Authorization'] = token;
+            } else {
+              const token = 'random_string_token_1234567890';
+              localStorage.setItem('user-token', token);
+              commit('setToken', token);
+              // axios.defaults.headers.common['Authorization'] = token;
+            }
+            resolve(response);
+          } else {
+            commit('setError', true);
+            commit('setMessage', 'Неверный email или пароль');
+            dispatch('clearMessage');
+          }
+          commit('setLoading', false);
+          commit('request', true);
+        }).catch((error) => {
+          commit('setLoading', false)
+          commit('setError', true)
+          commit('setMessage', error.message)
+          dispatch('clearMessage');
+          reject(error)
+        });
+      });
+    },
+
+    onLogout({commit}) {
+      return new Promise((resolve) => {
+          localStorage.removeItem('user-token');
+          commit('setToken', '');
+          // delete axios.defaults.headers.common['Authorization'];
+          resolve();
+      });
+  },
+
+    async getCurrensy({
+      state,
+      commit,
+      dispatch
+    }) {
       commit('clearError');
       commit('setLoading', true);
       try {
         commit('request', false);
         await axios.get(state.privatBankApi).then(response => {
           commit('setCurrency', response.data)
-          
+
           try {
             axios.get(state.api + 'bill').then(response => {
               commit('setBills', response.data.value)
@@ -109,7 +181,11 @@ export default new Vuex.Store({
       }
     },
 
-    async getCategories({state, commit, dispatch}) {
+    async getCategories({
+      state,
+      commit,
+      dispatch
+    }) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -127,7 +203,11 @@ export default new Vuex.Store({
       }
     },
 
-    async getEvents({state, commit, dispatch}) {
+    async getEvents({
+      state,
+      commit,
+      dispatch
+    }) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -145,7 +225,11 @@ export default new Vuex.Store({
       }
     },
 
-    async addCategory({state, commit, dispatch}, payload) {
+    async addCategory({
+      state,
+      commit,
+      dispatch
+    }, payload) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -173,7 +257,11 @@ export default new Vuex.Store({
       }
     },
 
-    async editCategory({state, commit, dispatch}, payload) {
+    async editCategory({
+      state,
+      commit,
+      dispatch
+    }, payload) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -202,7 +290,11 @@ export default new Vuex.Store({
       }
     },
 
-    async delCategory({state, commit, dispatch}, payload) {
+    async delCategory({
+      state,
+      commit,
+      dispatch
+    }, payload) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -226,7 +318,11 @@ export default new Vuex.Store({
       }
     },
 
-    async addEvent({state, commit, dispatch}, payload) {
+    async addEvent({
+      state,
+      commit,
+      dispatch
+    }, payload) {
       commit('clearError');
       commit('setLoading', true);
       try {
@@ -253,7 +349,10 @@ export default new Vuex.Store({
           dispatch('clearMessage');
 
           try {
-            axios.put(state.api + 'bill', {value: newBill, currency: 'UAH'}).then(response => {
+            axios.put(state.api + 'bill', {
+              value: newBill,
+              currency: 'UAH'
+            }).then(response => {
               commit('setBills', response.data.value)
             }).catch(error => {
               commit('setError', true)

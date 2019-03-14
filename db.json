@@ -14,7 +14,7 @@
     }
   ],
   "bill": {
-    "value": 95000,
+    "value": 145025,
     "currency": "UAH"
   },
   "categories": [
@@ -37,6 +37,21 @@
       "id": 4,
       "name": "Зарплата",
       "capacity": "50000"
+    },
+    {
+      "id": 5,
+      "name": "тесттест1",
+      "capacity": "1000"
+    },
+    {
+      "name": "qwerty",
+      "capacity": 20,
+      "id": 6
+    },
+    {
+      "name": "qwerty1",
+      "capacity": 20,
+      "id": 7
     }
   ],
   "events": [
@@ -271,6 +286,38 @@
       "date": "21.12.2018 11:12:88",
       "description": "Получил зарплату",
       "id": 29
+    },
+    {
+      "type": "income",
+      "amount": 10,
+      "category": 1,
+      "date": "14.03.2019 16:03:04",
+      "description": "тест",
+      "id": 30
+    },
+    {
+      "type": "income",
+      "amount": 10,
+      "category": 6,
+      "date": "14.03.2019 16:03:47",
+      "description": "тест",
+      "id": 31
+    },
+    {
+      "type": "income",
+      "amount": 5,
+      "category": 5,
+      "date": "14.03.2019 16:03:69",
+      "description": "wer",
+      "id": 32
+    },
+    {
+      "type": "income",
+      "amount": 50000,
+      "category": 4,
+      "date": "14.03.2019 16:03:72",
+      "description": "wer",
+      "id": 33
     }
   ]
 }

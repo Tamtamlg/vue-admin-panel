@@ -9,8 +9,6 @@ export default new Vuex.Store({
     token: localStorage.getItem('user-token') || '',
     loading: false,
     endRequest: true,
-    error: null,
-    message: '',
     menuLinks: [{
         name: "Счет",
         route: "bill",
@@ -47,12 +45,6 @@ export default new Vuex.Store({
     setLoading(state, payload) {
       state.loading = payload
     },
-    setMessage(state, payload) {
-      state.message = payload;
-    },
-    setError(state, payload) {
-      state.error = payload;
-    },
     clearError(state) {
       state.error = null
     },
@@ -76,19 +68,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    clearMessage({
-      commit
-    }) {
-      setTimeout(() => {
-        commit('setMessage', '')
-        commit('clearError');
-      }, 5000);
-    },
-
     onLogin({
       state,
-      commit,
-      dispatch
+      commit
     }, payload) {
 
       commit('clearError');
@@ -119,35 +101,33 @@ export default new Vuex.Store({
             }
             resolve(response);
           } else {
-            commit('setError', true);
-            commit('setMessage', 'Неверный email или пароль');
-            dispatch('clearMessage');
+            Vue.prototype.$flashStorage.flash('Неверный email или пароль', 'error', {
+              timeout: 3000
+            });
           }
           commit('setLoading', false);
           commit('request', true);
         }).catch((error) => {
           commit('setLoading', false)
-          commit('setError', true)
-          commit('setMessage', error.message)
-          dispatch('clearMessage');
+          Vue.prototype.$flashStorage.flash(error.message, 'error');
           reject(error)
         });
       });
     },
 
-    onLogout({commit}) {
+    onLogout({
+      commit
+    }) {
       return new Promise((resolve) => {
-          localStorage.removeItem('user-token');
-          commit('setToken', '');
-          // delete axios.defaults.headers.common['Authorization'];
-          resolve();
+        localStorage.removeItem('user-token');
+        commit('setToken', '');
+        resolve();
       });
-  },
+    },
 
     async getCurrensy({
       state,
-      commit,
-      dispatch
+      commit
     }) {
       commit('clearError');
       commit('setLoading', true);
@@ -160,14 +140,14 @@ export default new Vuex.Store({
             axios.get(state.api + 'bill').then(response => {
               commit('setBills', response.data.value)
             }).catch(error => {
-              commit('setError', true)
-              commit('setMessage', error.message)
-              dispatch('clearMessage');
+              Vue.prototype.$flashStorage.flash(error.message, 'error', {
+                timeout: 3000
+              });
             });
           } catch (error) {
-            commit('setError', true)
-            commit('setMessage', error.message)
-            dispatch('clearMessage');
+            Vue.prototype.$flashStorage.flash(error.message, 'error', {
+              timeout: 3000
+            });
           }
 
         });
@@ -175,16 +155,15 @@ export default new Vuex.Store({
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message);
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
     async getCategories({
       state,
-      commit,
-      dispatch
+      commit
     }) {
       commit('clearError');
       commit('setLoading', true);
@@ -197,16 +176,15 @@ export default new Vuex.Store({
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message);
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
     async getEvents({
       state,
-      commit,
-      dispatch
+      commit
     }) {
       commit('clearError');
       commit('setLoading', true);
@@ -219,9 +197,9 @@ export default new Vuex.Store({
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message);
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
@@ -244,16 +222,17 @@ export default new Vuex.Store({
           }
         }).then(() => {
           dispatch('getCategories');
-          commit('setMessage', 'Данные успешно добавлены')
-          dispatch('clearMessage');
+          Vue.prototype.$flashStorage.flash('Данные успешно добавлены', 'success', {
+            timeout: 3000
+          });
         });
         commit('setLoading', false);
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message)
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
@@ -277,16 +256,17 @@ export default new Vuex.Store({
           }
         }).then(() => {
           dispatch('getCategories');
-          commit('setMessage', 'Данные успешно изменены')
-          dispatch('clearMessage');
+          Vue.prototype.$flashStorage.flash('Данные успешно изменены', 'success', {
+            timeout: 3000
+          });
         });
         commit('setLoading', false);
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message)
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
@@ -305,23 +285,23 @@ export default new Vuex.Store({
           }
         }).then(() => {
           dispatch('getCategories');
-          commit('setMessage', 'Данные успешно удалены')
-          dispatch('clearMessage');
+          Vue.prototype.$flashStorage.flash('Данные успешно удалены', 'success', {
+            timeout: 3000
+          });
         });
         commit('setLoading', false);
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message)
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 
     async addEvent({
       state,
-      commit,
-      dispatch
+      commit
     }, payload) {
       commit('clearError');
       commit('setLoading', true);
@@ -345,8 +325,9 @@ export default new Vuex.Store({
             'Content-Type': 'application/json'
           }
         }).then(() => {
-          commit('setMessage', 'Данные успешно добавлены')
-          dispatch('clearMessage');
+          Vue.prototype.$flashStorage.flash('Данные успешно добавлены', 'success', {
+            timeout: 3000
+          });
 
           try {
             axios.put(state.api + 'bill', {
@@ -355,14 +336,14 @@ export default new Vuex.Store({
             }).then(response => {
               commit('setBills', response.data.value)
             }).catch(error => {
-              commit('setError', true)
-              commit('setMessage', error.message)
-              dispatch('clearMessage');
+              Vue.prototype.$flashStorage.flash(error.message, 'error', {
+                timeout: 3000
+              });
             });
           } catch (error) {
-            commit('setError', true)
-            commit('setMessage', error.message)
-            dispatch('clearMessage');
+            Vue.prototype.$flashStorage.flash(error.message, 'error', {
+              timeout: 3000
+            });
           }
 
 
@@ -371,9 +352,9 @@ export default new Vuex.Store({
         commit('request', true);
       } catch (error) {
         commit('setLoading', false)
-        commit('setError', true)
-        commit('setMessage', error.message)
-        dispatch('clearMessage');
+        Vue.prototype.$flashStorage.flash(error.message, 'error', {
+          timeout: 3000
+        });
       }
     },
 

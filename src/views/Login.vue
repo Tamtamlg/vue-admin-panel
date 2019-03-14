@@ -73,9 +73,7 @@ export default {
   },
   created() {
     if(this.$route.query['loginError']) {
-      this.$store.commit('setError', true)
-      this.$store.commit('setMessage', 'Требуется авторизация')
-      this.$store.dispatch('clearMessage')
+      this.flash('Требуется авторизация', 'error', {timeout: 3000});
     }
   }
 };
